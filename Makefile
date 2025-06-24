@@ -4,6 +4,10 @@ CURRENT_DIR := $(shell pwd)
 ARCH := $(shell uname -m)
 PYTHON ?= python3
 
+
+# PIP_INDEX_URL ?= https://pypi.tuna.tsinghua.edu.cn/simple
+# PIP := ${PYTHON} -m pip install -i ${PIP_INDEX_URL}
+
 .PHONY: help
 help: Makefile
 	@sed -n 's/^\(## \)\([a-zA-Z]\)/\2/p' $<
@@ -32,14 +36,21 @@ install-base-pip-packages:
 	${PYTHON} -m pip install pip==${PIP_VERSION}
 	${PYTHON} -m pip install -r requirements/base.txt
 
+# .PHONY: install-huggingface
+# install-huggingface:
+# 	${PYTHON} -m pip install pip==${PIP_VERSION}
+# 	${PYTHON} -m pip install -r requirements/hugginprint(nltk.data.path)gface.txt
 .PHONY: install-huggingface
 install-huggingface:
-	${PYTHON} -m pip install pip==${PIP_VERSION}
-	${PYTHON} -m pip install -r requirements/huggingface.txt
+	${PYTHON} -m pip install pip==${PIP_VERSION} -i https://pypi.tuna.tsinghua.edu.cn/simple
+	${PYTHON} -m pip install -r requirements/huggingface.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
 
 .PHONY: install-nltk-models
 install-nltk-models:
-	${PYTHON} -c "from unstructured.nlp.tokenize import download_nltk_packages; download_nltk_packages()"
+	# ${PYTHON} -c "import nltk; print(nltk.data.path)"
+	# ${PYTHON} -c "from unstructured.nlp.tokenize import download_nltk_packages; download_nltk_packages()"
+	# ${PYTHON} -c "import nltk; nltk.data.path.insert(0, '/root/nltk_data'); from unstructured.nlp.tokenize import download_nltk_packages; download_nltk_packages()"
 
 .PHONY: install-test
 install-test:
